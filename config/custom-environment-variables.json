@@ -1,0 +1,7 @@
+{
+  "restService": {
+    "fetchProducts": "FETCH_PRODUCTS",
+    "fetchShopperHistory": "FETCH_SHOPPERS_HISTORY",
+    "calculateTrolly": "TROLLY_TOTAL"
+  }
+}

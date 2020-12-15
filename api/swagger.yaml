@@ -1,0 +1,166 @@
+swagger: '2.0'
+info:
+  title: Woolies-x test
+  description: Answer API
+  version: '1.0'
+produces:
+  - application/json
+host: localhost:3000
+basePath: /api/v1/answers
+
+paths:
+  /healthCheck:
+    x-swagger-router-controller: healthCheck
+    get:
+      deprecated: false
+      operationId: healthCheck
+      tags:
+        - healthCheck
+      description: Just a health check.
+      consumes: ['application/json']
+      produces: ['application/json']
+      responses:
+        '200':
+          description: is working.
+          schema:
+            $ref: '#/definitions/Success'
+        default:
+          description: Invalid request.
+          schema:
+            $ref: '#/definitions/Error'
+  /user:
+    x-swagger-router-controller: user
+    get:
+      deprecated: false
+      operationId: user
+      tags:
+        - user
+      summary: Respond with some user data.
+      description: Returns user data.
+      consumes: ['application/json']
+      produces: ['application/json']
+      responses:
+        '200':
+          description: Successful request.
+          schema:
+            $ref: '#/definitions/Users'
+        default:
+          description: Invalid request.
+          schema:
+            $ref: '#/definitions/Error'
+
+  /products:
+    x-swagger-router-controller: products
+    get:
+      deprecated: false
+      operationId: products
+      tags:
+        - category
+      summary: Get all products according to given sortOption.
+      description: Returns list of all the active products according to given sortOption
+      consumes: ['application/json']
+      produces: ['application/json']
+      parameters:
+        - in: query
+          name: sortOption
+          type: string
+          enum: [Low, High, Ascending, Descending, Recommended]
+          description: The endpoint will return the products based on the sort option
+      responses:
+        '200':
+          description: Successful request.
+          schema:
+            '$ref': '#/definitions/Products'
+        default:
+          description: Invalid request.
+          schema:
+            '$ref': '#/definitions/Error'
+
+  /trolleyTotal:
+    x-swagger-router-controller: trolleytotal
+    post:
+      deprecated: false
+      operationId: trolleytotal
+      tags:
+        - total
+      summary: Calculates trolleyTotal for the passed values.
+      description: Returns trolleyTotal for the passed values
+      consumes: ['application/json']
+      produces: ['application/json']
+      responses:
+        '200':
+          description: TrollyTotal.
+        default:
+          description: Invalid request.
+          schema:
+            '$ref': '#/definitions/Error'
+
+definitions:
+  Success:
+    properties:
+      message:
+        type: string
+
+  Users:
+    properties:
+      name:
+        type: string
+      token:
+        type: string
+
+  Products:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+        quantity:
+          type: number
+
+  Trolly:
+    type: object
+    properties:
+      products:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            price:
+              type: number
+      specials:
+        type: array
+        items:
+          type: object
+          properties:
+            quantities:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  quantity:
+                    type: string
+            total:
+              type: number
+      quantities:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            quantity:
+              type: number
+
+  Error:
+    properties:
+      message:
+        type: string
+    required:
+      - message
